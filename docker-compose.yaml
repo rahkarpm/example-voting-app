@@ -1,0 +1,26 @@
+version: "3.7"
+
+volumes:
+  db-data:
+
+services:  
+  vote:
+    image: prakhmis/vote
+    ports:
+      - 8001:80
+    depends_on:
+      - redis
+  redis:
+    image: redis:alpine
+  worker:
+    image: prakhmis/worker
+    depends_on:
+      - redis
+  db:
+    image: postgres:9.4
+    volumes:
+      - db-data:/var/lib/postgresql/data
+  result:
+    image: prakhmis/result
+    ports:
+      - 8002:80
